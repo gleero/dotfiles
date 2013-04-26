@@ -1,0 +1,12 @@
+# Automatically decompress the response
+alias curl='curl --compressed'
+
+# IP addresses
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias localip="ipconfig getifaddr en1"
+
+# Kill dublicates
+alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
+
+# rm .DS_Store files
+alias cleanme="find . -name '.DS_Store' -exec rm {} \;"
