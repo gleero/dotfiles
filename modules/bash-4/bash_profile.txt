@@ -1,0 +1,4 @@
+# Bash-4 options
+
+shopt -s autocd
+shopt -s globstar
