@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#
+# Authors: 
+#		Vladimir Perekladov, http://perekladov.ru/
+#
+
+alias quit='killall -9'
