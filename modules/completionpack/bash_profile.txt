@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# Authors:
+#   Brett Terpstra, http://brettterpstra.com/2011/10/04/bash-auto-complete-for-running-applications/
+#   Mathias Bynens, https://github.com/mathiasbynens/dotfiles/blob/master/.bash_profile
+#   Vladimir Perekladov, http://perekladov.ru/
+
+
+# Brew bash completion
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+	. $(brew --prefix)/etc/bash_completion
+fi
+
+# `quit` completion
+_complete_running_apps ()
+{
+  local cur prev
+  local LC_ALL='C'
+
+  COMPREPLY=()
+  cur=${COMP_WORDS[COMP_CWORD]}
+  prev=${COMP_WORDS[COMP_CWORD-1]}
+
+  # do not attempt completion if we're specifying an option
+  [[ "$cur" == -* ]] && return 0
+
+  # Escape dots in paths for grep 
+  cur=${cur//\./\\\.}
+
+  local IFS="
+"
+  COMPREPLY=( $( echo "$(osascript -e "set AppleScript's text item delimiters to \"\n\"" -e "tell application \"System Events\" to return (displayed name of every application process whose (background only is false and displayed name is not \"Finder\")) as text" 2>/dev/null)"|grep -i "^$cur" | sed -e 's/ /\\ /g' ) )
+
+  return 0
+}
+complete -o bashdefault -o default -o nospace -F _complete_running_apps quit 2>/dev/null || complete -o default -o nospace -F _complete_running_apps quit
+
+
+# `killall` completion
+_complete_running_processes ()
+{
+    local cur prev
+    local LC_ALL='C'
+
+    COMPREPLY=()
+    cur=${COMP_WORDS[COMP_CWORD]}
+    prev=${COMP_WORDS[COMP_CWORD-1]}
+
+    # do not attempt completion if we're specifying an option
+    [[ "$cur" == -* ]] && return 0
+
+    # Escape dots in paths for grep
+    cur=${cur//\./\\\.}
+
+    local IFS="
+"
+    COMPREPLY=( $(ps axc|awk '{ print $5 }'|sort -u|grep -v "^[\-\(]"|grep -i "^$cur") )
+
+    return 0
+}
+complete -o bashdefault -o default -o nospace -F _complete_running_processes killall 2>/dev/null || complete -o default -o nospace -F _complete_running_processes killall
+
+# Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
+[ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2 | tr ' ' '\n')" scp sftp ssh
