@@ -1,0 +1,38 @@
+#!/bin/bash
+
+#
+# Colorize bash promt, ls, grep
+#
+# Authors:
+#		Vladimir Perekladov, http://perekladov.ru/
+#
+
+# Change user color if root
+function prompt_command() {
+        if [[ "`whoami`" == "root" ]]
+        then
+                userColor="$HRED"
+        else
+                userColor="$HGREEN"
+        fi
+        echo -en "$userColor$BOLD"
+}
+
+# Promt colors
+PROMPT_COMMAND=prompt_command
+PS1="\u\[$BOLD\]\[$MAGENTA\]@\h \[$HWHITE\]\W\[$CYAN\] \$\[$NOCOLOR\] "
+
+# ls colors
+export CLICOLOR=1
+export LSCOLORS=GxFxCxDxBxegedabagaced
+
+# Grep colors
+export GREP_OPTIONS='--color=auto'
+
+# Nano is default editor
+export EDITOR='nano'
+
+# Custom bash options
+shopt -s nocaseglob
+shopt -s histappend
+shopt -s cdspell

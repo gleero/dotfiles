@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Base aliases
+#
+# Authors: 
+#		Mathias Bynens, https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
+#		Vladimir Perekladov, http://perekladov.ru/
+#
+
+alias ls='ls -GFh'
+alias ll='ls -l'
+alias la="ls -a"
+alias o="open ."
+
+alias ..="cd .."
+alias ~="cd ~"
+alias -- -="cd -"
