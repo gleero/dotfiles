@@ -1,4 +1,7 @@
 # Bash-4 options
+#
+# Authors:
+#		Vladimir Perekladov, http://perekladov.ru/
 
 shopt -s autocd
 shopt -s globstar
