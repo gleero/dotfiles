@@ -1,0 +1,3 @@
+# Профилирование в питоне
+alias cprofile="python -m cProfile -o profile.pyprof -s cumulative"
+alias cpic="gprof2dot -f pstats profile.pyprof | dot -Tpng -o profile.png && rm profile.pyprof"
