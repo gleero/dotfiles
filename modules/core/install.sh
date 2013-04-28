@@ -22,8 +22,5 @@ if [ "$1" == "bash_profile" ]; then
 	echo '	source $i'
 	echo "done"
 	echo ''
-	echo 'for i in "$DOTPATH/private/*.sh" ; do'
-	echo '	source $i'
-	echo "done"
 
 fi
