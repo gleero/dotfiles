@@ -59,9 +59,8 @@ fi
 
 # # Устанавливаем dotfiles в $DOTPATH
 echo "$INSTALL Распаковка dotfiles в $DOTPATH..."
-cd "$DOTPATH/../"
-rm -rf dotfiles 2> /dev/null
-git clone https://github.com/gleero/dotfiles.git dotfiles
+rm -rf $DOTPATH 2> /dev/null
+git clone https://github.com/gleero/dotfiles.git "$DOTPATH"
 echo "$OK dotfiles распакован"
 
 cd $DOTPATH
