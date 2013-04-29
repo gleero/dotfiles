@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Create an SSH key and uploads it to the given host
+#
+# Usage: ssh-key-send <hostname>
+#
+# Authors: 
+#		Thomas Deceuninck, https://gist.github.com/1761938
+#		Artem Sapegin, https://github.com/sapegin/dotfiles/blob/master/includes/bash_functions.bash
+#		Vladimir Perekladov, perekladov.ru
+#
+
+hostname=$1
+
+if [[ "$hostname" == "" ]]; then
+
+	echo "Usage: ssh-key-send <hostname>"
+
+else
+
+	if [ ! -f "~/.ssh/id_dsa" ]; then
+		echo "Generating key..."
+		ssh-keygen -t dsa
+	fi
+
+	header "Uploading key..."
+	ssh $hostname 'mkdir -p .ssh && cat >> ~/.ssh/authorized_keys' < ~/.ssh/id_dsa.pub
+	tput bold; ssh -o PasswordAuthentication=no $hostname true && { tput setaf 2; echo "SSH key added."; } || { tput setaf 1; echo "Failure"; }; tput sgr0
+fi

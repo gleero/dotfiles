@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# Prettify stdin ugly JSON and colorize it
+#
+# Usage: | json
+#
+# Author: Vladimir Perekladov, perekladov.ru
+#
+
+import sys
+import json
+import re
+
+# Help
+if len(sys.argv) > 1 and "-h" in sys.argv[1]:
+    print "Pretty JSON (http://gleero.com)"
+    print "usage: redirect ugly JSON to me"
+    print 'echo \'["1","2","3"]\' | json'
+    sys.exit(0)
+
+# Colors
+Blue = "\033[34m"
+Green = "\033[36m"
+GreenX = "\033[32m"
+Red = "\033[31m"
+Yellow = '\033[33m'
+Nocolor = "\033[0m"
+
+# Parse JSON
+try:
+    data = sys.stdin.readlines()
+
+except KeyboardInterrupt:
+    print "\nUse std pipes, Luke!"
+    print 'echo \'["1","2","3"]\' | json'
+    sys.exit(1)
+
+try:
+    ret = json.loads(data[0])
+    export = json.dumps(ret, indent=4)
+
+except:
+    print "JSON invalid!"
+    sys.exit(1)
+
+# Colorizing if writing to tty
+if sys.stdout.isatty():
+    export = re.sub(r"\[", '%s[%s' % (Green, Nocolor), export)
+    export = re.sub(r"\]", '%s]%s' % (Green, Nocolor), export)
+    export = re.sub(r": ([0-9]+)", r': %s\1%s' % (GreenX, Nocolor), export)
+    export = re.sub(r"(\"\w+\"):", r'%s\1%s:' % (Yellow, Nocolor), export)
+    export = re.sub(r"{", '%s{%s' % (Green, Nocolor), export)
+    export = re.sub(r"}", '%s}%s' % (Green, Nocolor), export)
+    export = re.sub(r",", '%s,%s' % (Green, Nocolor), export)
+    export = re.sub(r"0m(:)", r'%s\1%s' % (Red, Nocolor), export)
+    export = re.sub(r"(true|false|null)", r'%s\1%s' % (Blue, Nocolor), export)
+
+print export

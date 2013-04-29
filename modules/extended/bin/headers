@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Show HTTP headers for given URL
+#
+# Usage: headers <URL>
+#
+# Authors: 
+#		Ryan Tomayko, https://github.com/rtomayko/dotfiles/blob/rtomayko/bin/headers
+#		Artem Sapegin, https://github.com/sapegin/dotfiles/blob/master/includes/bash_functions.bash
+#
+
+curl -sv -H "User-Agent: Mozilla/5 Gecko" "$@" 2>&1 >/dev/null |
+        grep -v "^\*" |
+        grep -v "^}" |
+        cut -c3-
