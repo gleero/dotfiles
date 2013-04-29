@@ -1,0 +1,149 @@
+#!/bin/bash
+#
+# Обновление и удаление dotfiles
+#
+# Authors:
+#		Vladimir Perekladov, http://perekladov.ru/
+#
+
+# Подключаем расцветку
+source "$DOTPATH/inc/libcolors.sh"
+
+BASH_PROFILE="/tmp/dotfiles-bash_profile"
+BASH_ALIASES="/tmp/dotfiles-aliases"
+PACKAGES="$DOTPATH/installed-packages"
+
+# Обновление
+if [ "$1" == "update" ]; then
+
+	echo "$INSTALL обновление dotfiles в $DOTPATH..."
+
+	brew update
+
+	# Обновляемся
+	cd $DOTPATH
+	#git pull origin master
+	echo "$OK dotfiles загружен"
+
+	# Устанавливаем
+	if [ ! -d "modules" ]; then
+		echo "$ERROR Директория с пакетами \"$DOTPATH/modules\" не найдена"
+		exit 16
+	fi
+
+	cat $PACKAGES | grep -v "^$" | while read choice
+	do
+
+		echo "$INSTALL Обновление модуля $choice..."
+
+		# Переходим в папку с модулем
+		cd "$DOTPATH/modules/$choice"
+
+		# Собираем .bash_profile
+		./install.sh bash_profile >> $BASH_PROFILE
+		if [ $? -ne 0 ]; then
+			echo "$ERROR Ошибка при выполнении './install.sh bash_profile' модуля $choice"
+			exit 1
+		else
+			echo -e "\n" >> $BASH_PROFILE
+		fi
+
+		# Собираем алиасы
+		./install.sh aliases >> $BASH_ALIASES
+		if [ $? -ne 0 ]; then
+			echo "$ERROR Ошибка при выполнении './install.sh aliases' модуля $choice"
+			exit 1
+		else
+			echo -e "\n" >> $BASH_ALIASES
+		fi
+
+		# Устанавливаем зависимости
+		./install.sh dependence
+		if [ $? -ne 0 ]; then
+			echo "$ERROR Ошибка при выполнении './install.sh dependence' модуля $choice"
+			exit 1
+		fi
+
+		# Устанавливаем бинарники
+		./install.sh bin
+		if [ $? -ne 0 ]; then
+			echo "$ERROR Ошибка при выполнении './install.sh bin' модуля $choice"
+			exit 1
+		fi
+
+		# Установочные скрипты
+		./install.sh install
+		if [ $? -ne 0 ]; then
+			echo "$ERROR Ошибка при выполнении './install.sh install' модуля $choice"
+			exit 1
+		fi
+
+		echo "$OK Модуль $choice обновлён"
+	done
+
+	#########################
+	# Установка
+	echo -e "\n" >> $BASH_PROFILE
+	cat "$BASH_ALIASES" >> "$BASH_PROFILE"
+	echo "" > ~/.bash_profile
+	cat "$BASH_PROFILE" | grep -v '^#' | grep -v '^$' > ~/.bash_profile
+	#########################
+
+	# Послеустановочные задания
+	cat $PACKAGES | grep -v "^$" | while read choice
+	do
+		cd "$DOTPATH/modules/$choice"
+		# Послеустановочные скрипты
+		./install.sh postinstall
+		last=$?
+		if [ $last -eq 1 ]; then
+			echo "$ERROR Ошибка при выполнении './install.sh postinstall' модуля $choice"
+			exit 1
+		fi
+		if [ $last -eq 2 ]; then
+			echo "$OK Для $choice выполнен послеустановочный скрипт"
+		fi
+		cd ".."
+	done
+
+	# Очистка
+	rm $BASH_PROFILE
+	rm $BASH_ALIASES
+
+	echo "$OK dotfiles обновлён"
+
+	exit 0
+fi
+
+
+# Удаление
+if [ "$1" == "remove" ]; then
+
+	echo "$INSTALL удаление dotfiles..."
+
+	cd $DOTPATH
+
+	# Выполним uninstall во всех пакетах
+	cat $PACKAGES | grep -v "^$" | while read choice
+	do
+		echo "$INSTALL Удаление модуля $choice..."
+		# Переходим в папку с модулем
+		cd "$DOTPATH/modules/$choice"
+		./install.sh uninstall
+		echo "$OK Модуль $choice удалён"
+	done
+
+	# Чистим баш-профиль
+	echo "" > ~/.bash_profile
+
+	# Удаляем папку
+	#cd ~
+	#rm -rf $DOTPATH/
+
+	echo "$OK dotfiles удалён"
+
+	exit 0
+fi
+
+echo "$ERROR Неверная операция $1"
+exit 1

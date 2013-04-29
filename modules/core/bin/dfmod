@@ -1,0 +1,209 @@
+#!/bin/bash
+#
+# Работа с модулями
+#
+# Authors:
+#		Vladimir Perekladov, http://perekladov.ru/
+#
+
+# Подключаем расцветку
+source "$DOTPATH/inc/libcolors.sh"
+
+# Список установленных пакетов
+PACKAGES="$DOTPATH/installed-packages"
+
+# Создание нового пакета
+if [ "$1" == "init" ]; then
+
+	# Указано ли имя
+	if [ "$2" == "" ]; then
+		echo "$ERROR имя пакета не указано"
+		exit 1
+	fi
+
+	# Описание
+	echo "$INFO Введите описание модуля $2:"
+	read DESC
+
+	echo "$INFO создание модуля $2..."
+	PACKAGE=$2
+
+	# Создаём пакет
+	mkdir $PACKAGE
+
+	# Создаём папку bin
+	mkdir $PACKAGE/bin
+
+	# Создаём описание
+	echo -e "OFF\n$DESC" > $PACKAGE/description.txt
+
+###################################################
+
+	cat > $PACKAGE/install.sh <<EOF
+#!/bin/bash
+
+# Dotfiles package installer
+# https://github.com/gleero/dotfiles
+
+# Если хотите  чтобы пакет добавлял  что-нибудь в .bash_profile,
+# создайте рядом  файл bash_profile.txt с нужным вам содержимым.
+
+# Соответственно чтобы добавить свои алиасы, положите их в файл
+# aliases.txt.
+
+# Если ваши ништяки зависят  от внешних программ или  библиотек,
+# раскоментируйте  сточку DEPENDENCES  и добавьте  через пробел
+# нужные вам пакеты.
+# Пакеты будут установлены через homebrew.
+
+# DEPENDENCES=""
+
+# Для установки скриптов, приложений и бинарников, поместите их
+# в папку bin/ рядом с этим скриптом.  Если таковых нет - папку
+# можно удалить.
+
+source "\$DOTPATH/inc/modinstall.sh"
+
+# Свои скрипты
+##############
+
+# ПРИМЕЧАНИЕ: Слать сообщения пользователю нужно командой
+# echoerr "Сообщение"
+# Можно  использовать \$OK, \$INSTALL, \$INFO и \$ERROR в сообщении,
+# чтобы выводить красивое сообщение.
+
+# Если вы хотите произвести нестандартное действие, лучше всего
+# воспользоваться таском "install".
+# Хорошим тоном является создать бэкап изменяемых файлов, чтобы
+# при удалении вернуть всё как было.  Также нужно написать таск
+# "uninstall", который подчистит  систему и вернёт всё как было.
+
+# При ошибке обязательно нужно выйти с помощью "exit 1".
+
+# Переменная \$DOTPATH содержит путь к  корню dotfiles. Не стоит
+# использовать "~/dotfiles/", так как dotfiles могли установить
+# в другое место. Use \$DOTPATH, Luke!
+
+# Нестандартная установка
+
+# if [ "\$1" == "install" ]; then
+#	echoerr "\$INFO Custom installing"
+# 	# Your code here
+# 	exit 0
+# fi
+
+# Нестандартное удаление
+
+# if [ "\$1" == "uninstall" ]; then
+#	echoerr "\$INFO Custom uninstalling"
+# 	# Your code here
+# 	exit 0
+# fi
+
+# Скрипт пост-установки, которвый выполняется в самом конце. Не
+# рекомендуется использовать без необходимости. Можно, например,
+# делать что-нибудь  с .bash_profile, который к моменту запуска
+# будет полностью сформирован.
+# Успешный postinstall должен вернуть код 2.
+
+# if [ "\$1" == "postinstall" ]; then
+#	echoerr "\$INFO Postinstalling"
+# 	# Your code here
+# 	exit 2
+# fi
+
+exit 0
+EOF
+
+###################################################
+
+cat > $PACKAGE/Readme.md <<EOF
+# Модуль $PACKAGE
+
+$DESC
+
+## Функционал
+
+## Алиасы
+
+## Расположение
+
+Модуль расположен в \`~/dotfiles/modules/$PACKAGE/\`.
+
+## Установка
+EOF
+
+###################################################
+
+cat > $PACKAGE/bash_profile.txt <<EOF
+# Содержимое этого файла будет помещено в .bash_profile
+EOF
+
+###################################################
+
+cat > $PACKAGE/aliases.txt <<EOF
+# Тут должен быть список алиасов, которые установятся вместе с модулем
+EOF
+
+	echo "$OK модуль $PACKAGE успешно создан в `pwd`/$PACKAGE"
+
+	exit 0
+fi
+
+
+# Установка
+if [ "$1" == "install" ]; then
+
+	# Указано ли имя
+	if [ "$2" == "" ]; then
+		echo "$ERROR имя пакета не указано"
+		exit 1
+	fi
+	PACKAGE=$2
+
+	# Первоначальная папка
+	YP="`pwd`"
+
+	# Переходим в папку с модулем
+	if [ ! -e $PACKAGE ]; then
+		echo "$ERROR Модуль в '$PACKAGE' не найден!"
+		exit 1
+	fi
+	cd $PACKAGE
+	MODDIR="`pwd`"
+	MODNAME="`basename $MODDIR`"
+
+	# Проверяем местонахождение модуля
+	if ! pwd | grep "$DOTPATH/modules" > /dev/null; then
+		echo "$ERROR Модуль должен находиться в '$DOTPATH/modules'"
+		cd $YP
+		exit 1
+	fi
+
+	# Проверяем, является ли модуль настоящим модулем
+	if [ ! -e $MODDIR/install.sh ] || [ ! -e $MODDIR/description.txt ]; then
+		echo "$ERROR '$PACKAGE' не является модулем, так как файлы 'install.sh' и 'description.txt' не найдены!"
+		cd $YP
+		exit 1
+	fi
+
+	echo "$INSTALL Установка модуля $MODNAME..."
+
+	# Переходим в папку с модулем
+	cd "$DOTPATH/modules/$choice"
+
+	# Установка или обновление?
+	if cat $PACKAGES | grep $MODNAME > /dev/null; then
+		echo "$INFO Модуль '$MODNAME' уже установлен, выполняется обновление..."
+	else
+		# Добавляем в список пакетов
+		echo $MODNAME >> $PACKAGES
+	fi
+
+	echo "$OK модуль $MODNAME установлен"
+	cd $YP
+	exit 0
+fi
+
+echo "$ERROR Неверная операция $1"
+exit 1
