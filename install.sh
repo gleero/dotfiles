@@ -64,6 +64,11 @@ rm -rf $DOTPATH 2> /dev/null
 git clone https://github.com/gleero/dotfiles.git $DOTPATH
 echo "$OK dotfiles распакован"
 
+# Создание папки bin/
+if [ ! -e $DOTPATH/bin ]; then
+	mkdir $DOTPATH/bin
+fi
+
 cd $DOTPATH
 
 # Ищем пакеты, которые можно поставить
@@ -198,11 +203,6 @@ then
 	fi
 	if [ ! -e $DOTPATH/private/bash_profile.sh ]; then
 		echo -e "# Private Bash Profile\n# Can be used for other settings you don’t want to commit\n" > $DOTPATH/private/bash_profile.sh
-	fi
-
-	# Создание папки bin/
-	if [ ! -e $DOTPATH/bin ]; then
-		mkdir $DOTPATH/bin
 	fi
 
 	rm $DOTPATH/install.sh
