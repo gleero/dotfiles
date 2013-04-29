@@ -27,6 +27,7 @@ fi
 
 # Куда устанавливаем dotfiles
 export DOTPATH="~/dotfiles"
+eval DOTPATH=$DOTPATH
 
 # Установка homebrew
 if ! command -v git >/dev/null 2>&1; then
@@ -109,7 +110,7 @@ then
 		echo "$INSTALL Установка модуля $choice..."
 		echo "$choice" >> $PACKAGES
 		# Переходим в папку с модулем
-		cd "$DOTPATH/modules/$choice"
+		cd $DOTPATH/modules/$choice
 
 		# Собираем .bash_profile
 		./install.sh bash_profile >> $BASH_PROFILE
@@ -165,7 +166,7 @@ then
 	# Послеустановочные задания
 	for choice in $data
 	do
-		cd "$DOTPATH/modules/$choice"
+		cd $DOTPATH/modules/$choice
 		# Послеустановочные скрипты
 		./install.sh postinstall
 		last=$?
