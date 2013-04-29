@@ -61,7 +61,7 @@ fi
 echo "$INSTALL Распаковка dotfiles в $DOTPATH..."
 cd "$DOTPATH/../"
 rm -rf dotfiles 2> /dev/null
-git clone git@github.com:gleero/dotfiles.git dotfiles
+git clone https://github.com/gleero/dotfiles.git dotfiles
 echo "$OK dotfiles распакован"
 
 cd $DOTPATH
