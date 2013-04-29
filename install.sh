@@ -26,8 +26,7 @@ if [ `uname` != 'Darwin' ]; then
 fi
 
 # Куда устанавливаем dotfiles
-#DOTPATH="~/dotfiles"
-export DOTPATH="/Users/gleero/Documents/Projects/dotfiles"
+export DOTPATH="~/dotfiles"
 
 # Установка homebrew
 if ! command -v git >/dev/null 2>&1; then
@@ -36,7 +35,7 @@ if ! command -v git >/dev/null 2>&1; then
 	echo "$OK homebrew установлен"
 else
 	echo "$INFO Обновление homebrew..."
-	#brew update
+	brew update
 	echo "$OK homebrew обновлён"
 fi
 
@@ -60,9 +59,9 @@ fi
 
 # # Устанавливаем dotfiles в $DOTPATH
 echo "$INSTALL Распаковка dotfiles в $DOTPATH..."
-#cd "$DOTPATH/../"
-#rm -rf dotfiles 2> /dev/null
-#git clone git@github.com:gleero/dotfiles.git dotfiles
+cd "$DOTPATH/../"
+rm -rf dotfiles 2> /dev/null
+git clone git@github.com:gleero/dotfiles.git dotfiles
 echo "$OK dotfiles распакован"
 
 cd $DOTPATH
@@ -206,7 +205,7 @@ then
 		mkdir $DOTPATH/bin
 	fi
 
-	#rm $DOTPATH/install.sh
+	rm $DOTPATH/install.sh
 
 else
 	echo "$ERROR Установка прервана"
