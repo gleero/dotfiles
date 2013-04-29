@@ -13,7 +13,7 @@
 Наберите в терминале:
 
 ```bash
-curl dotfiles.gleero.com | bash
+curl -Ls dotfiles.gleero.com | bash
 ```
 
 **ВНИМАНИЕ!** После установки не редактируйте файл `~/.bash_profile`. Он генерируется автоматически и все отредактированные данные могут быть потеряны при обновлении.
@@ -259,5 +259,5 @@ dfmod init test
 
 Большинство модулей основано на:
 
-[https://github.com/mathiasbynens/dotfiles](https://github.com/mathiasbynens/dotfiles)
-[http://brettterpstra.com/2011/10/04/bash-auto-complete-for-running-applications/](http://brettterpstra.com/2011/10/04/bash-auto-complete-for-running-applications/)
+* [https://github.com/mathiasbynens/dotfiles](https://github.com/mathiasbynens/dotfiles)
+* [http://brettterpstra.com/2011/10/04/bash-auto-complete-for-running-applications/](http://brettterpstra.com/2011/10/04/bash-auto-complete-for-running-applications/)
