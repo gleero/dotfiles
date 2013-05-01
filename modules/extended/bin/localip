@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Simple Quick Look
+# Print Local IP
 #
 # Authors:
 #		Vladimir Perekladov, http://perekladov.ru/
@@ -19,4 +19,7 @@ for ITEM in $LIST; do
     fi
 done
 
-echo $LOCALIP
+if [ "$LOCALIP" == "" ]; then
+	echo "Nothing"
+else
+	echo $LOCALIP
