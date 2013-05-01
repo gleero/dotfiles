@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+# Simple Quick Look
+#
+# Authors:
+#		Vladimir Perekladov, http://perekladov.ru/
+#
+
+if [ "$1" == "" ]; then
+	# Copy stdin to temp file
+	TEMPFILE=`mktemp /private/tmp/quicklook.XXXXXXXXXXXXXXXXXXXX`
+	cat "${1:-/dev/stdin}" > $TEMPFILE
+else
+	TEMPFILE="$1"
+fi
+
+# Detect file content
+MIME=`file --mime-type -b $TEMPFILE`
+UTI=`mime2uti $MIME`
+# Show QL
+qlmanage -p -c "$UTI" $TEMPFILE > /dev/null
+
+# Delete tempfile if stdin
+if [ "$1" == "" ]; then
+	rm $TEMPFILE
+fi

@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# Simple Quick Look
+#
+# Authors:
+#		Vladimir Perekladov, http://perekladov.ru/
+#
+
+LIST=`ifconfig | grep "en[0-9]:" | awk -F ":" '{print $1}'`
+
+for ITEM in $LIST; do
+    if ifconfig $ITEM | grep "status: active" > /dev/null; then
+        INET=`ifconfig $ITEM | grep "inet " | awk '{print $2}'`
+        if [ "$LOCALIP" == "" ]; then
+            LOCALIP=$INET
+        else
+            LOCALIP="$LOCALIP, $INET"
+        fi
+    fi
+done
+
+echo $LOCALIP
