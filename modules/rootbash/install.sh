@@ -12,7 +12,7 @@ source "$DOTPATH/inc/modinstall.sh"
 if [ "$1" == "postinstall" ]; then
 	echoerr "$INFO 'rootbash' требует повышенных привилегий, поэтому сейчас команда 'sudo' запросит ваш пароль"
 	sudo cp ~/.bash_profile /var/root/.bash_profile
-	sudo cat /var/root/.bashrc <<_EOF_
+	sudo cat > /var/root/.bashrc <<_EOF_
 f [ -e ~/.bash_profile ]; then
         source ~/.bash_profile
 fi
