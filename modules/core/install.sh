@@ -28,11 +28,12 @@ done
 
 [ -d /usr/local/share/python ] && PATH="\$PATH:/usr/local/share/python"
 [ -d /usr/local/share/npm/bin ] && PATH="\$PATH:/usr/local/share/npm/bin"
-[ -d /usr/local/share/npm/bin ] && export NODE_PATH=/usr/local/share/npm/lib/node_modules:/usr/local/lib/node_modules:/usr/local/lib/node
+[ -d /usr/local/share/npm/bin ] && NODE_PATH="/usr/local/share/npm/lib/node_modules:/usr/local/lib/node_modules:/usr/local/lib/node"
 [ -d /usr/local/opt/ruby/bin ] && PATH="\$PATH:/usr/local/opt/ruby/bin"
 PATH="\$PATH:\$(brew --prefix coreutils)/libexec/gnubin"
 
 export PATH
+export NODE_PATH
 
 _EOF_
 fi
