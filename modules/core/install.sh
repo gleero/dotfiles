@@ -22,6 +22,10 @@ for i in \$DOTPATH/inc/lib*.sh ; do
 	source \$i
 done
 
+for i in \$DOTPATH/private/*.sh ; do
+	source \$i
+done
+
 [ -d /usr/local/share/python ] && PATH="\$PATH:/usr/local/share/python"
 [ -d /usr/local/share/npm/bin ] && PATH="\$PATH:/usr/local/share/npm/bin"
 [ -d /usr/local/share/npm/bin ] && export NODE_PATH=/usr/local/share/npm/lib/node_modules:/usr/local/lib/node_modules:/usr/local/lib/node
