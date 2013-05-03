@@ -39,8 +39,8 @@ fi
 
 if [ "$1" == "install" ]; then
 cat > ~/.bashrc <<_EOF_
-f [ -e ~/.bash_profile ]; then
-        source ~/.bash_profile
+if [ -e ~/.bash_profile ]; then
+	source ~/.bash_profile
 fi
 _EOF_
 fi
