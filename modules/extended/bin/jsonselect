@@ -1,0 +1,56 @@
+#!/usr/bin/env node
+
+// Conslole "jsonselect" app.
+//
+// Authors:
+//      Vladimir Perekladov, http://perekladov.ru/
+//      Using library JSONSelect, http://jsonselect.org/
+//
+//
+
+// Including JSONSelect (npm install JSONSelect)
+var jsonselect = require("JSONSelect");
+var jsondata = "";
+
+// CLI Arguments
+var argv = process.argv.splice(2);
+
+// Checking arguments and help
+if (argv.length > 1) {
+    process.stderr.write("Unknown arguments");
+    process.exit(1);
+}
+if (argv.length == 1 && argv[0] == "-h") {
+    process.stdout.write("JSONSelect CLI\nUsage:\nany json | jsonselect <pattern>");
+    process.exit(0);
+}
+
+process.stdin.resume();
+process.stdin.setEncoding('utf8');
+
+// Reading stdin json
+process.stdin.on('data', function(chunk) {
+    jsondata += chunk;
+});
+
+process.stdin.on('end', function() {
+
+    // Trying converting
+    try {
+       json = JSON.parse(jsondata);
+    }
+    catch (e) {
+       process.stderr.write("Invalid JSON");
+       process.exit(1);
+    }
+
+    // Parsing
+    try {
+        console.log(JSON.stringify(jsonselect.match(argv[0], json)));
+    }
+    catch (e) {
+        process.stderr.write("Invalid pattern\nVisit http://jsonselect.org/#docs for more information\n");
+        process.exit(1);
+    }
+
+});

@@ -10,3 +10,12 @@
 DEPENDENCES="phantomjs"
 
 source "$DOTPATH/inc/modinstall.sh"
+
+if [ "$1" == "install" ]; then
+	brew install node
+	npm install -g JSONSelect
+fi
+
+if [ "$1" == "uninstall" ]; then
+	npm remove -g JSONSelect
+fi
