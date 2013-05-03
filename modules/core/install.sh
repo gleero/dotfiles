@@ -28,7 +28,7 @@ done
 
 [ -d /usr/local/share/python ] && PATH="\$PATH:/usr/local/share/python"
 [ -d /usr/local/share/npm/bin ] && PATH="\$PATH:/usr/local/share/npm/bin"
-[ -d /usr/local/share/npm/bin ] && NODE_PATH="/usr/local/share/npm/lib/node_modules"
+which npm > /dev/null && NODE_PATH="/usr/local/share/npm/lib/node_modules"
 [ -d /usr/local/opt/ruby/bin ] && PATH="\$PATH:/usr/local/opt/ruby/bin"
 PATH="\$PATH:\$(brew --prefix coreutils)/libexec/gnubin"
 
