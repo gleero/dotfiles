@@ -12,9 +12,7 @@ source "$DOTPATH/inc/modinstall.sh"
 if [ "$1" == "postinstall" ]; then
 	echoerr "$INFO 'rootbash' требует повышенных привилегий, поэтому сейчас команда 'sudo' запросит ваш пароль"
 	sudo cp ~/.bash_profile /var/root/.bash_profile
-	sudo echo 'f [ -e ~/.bash_profile ]; then' > /var/root/.bashrc
-	sudo echo '    source ~/.bash_profile' >> /var/root/.bashrc
-	sudo echo 'fi' >> /var/root/.bashrc
+	sudo cp ~/.bashrc /var/root/.bashrc
 	if [[ `sudo dscl . -read /Users/root UserShell | grep /bin/sh` ]]
 	then
 		echo "$INSTALL Меняю шелл рута с /bin/sh на /bin/bash"
