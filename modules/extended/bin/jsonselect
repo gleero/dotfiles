@@ -21,7 +21,7 @@ if (argv.length > 1) {
     process.exit(1);
 }
 if (argv.length == 1 && argv[0] == "-h") {
-    process.stdout.write("JSONSelect CLI\nUsage:\nany json | jsonselect <pattern>");
+    process.stdout.write("JSONSelect CLI\nUsage: any json | jsonselect <pattern>\n");
     process.exit(0);
 }
 
