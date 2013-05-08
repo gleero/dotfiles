@@ -84,8 +84,9 @@ if [ "$1" == "update" ]; then
 	#########################
 	# Установка
 	echo -e "\n" >> $BASH_PROFILE
-	cat "$BASH_ALIASES" >> "$BASH_PROFILE"
 	echo "" > ~/.bash_profile
+	cat "$BASH_ALIASES" >> "$BASH_PROFILE"
+	echo -e "for i in "\$DOTPATH/private/*.sh" ; do\nsource \$i\ndone\n" >> "$BASH_PROFILE"
 	cat "$BASH_PROFILE" | grep -v '^#' | grep -v '^$' > ~/.bash_profile
 	#########################
 
