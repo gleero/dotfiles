@@ -255,9 +255,8 @@ dfmod init test
 
 # Разное
 
-Данный сборник частично основан на [дотфайлсах Артёма Сапегина](https://github.com/sapegin/dotfiles), за что ему большое спасибо.
-
 Большинство модулей основано на:
 
+* [https://github.com/sapegin/dotfiles](https://github.com/sapegin/dotfiles)
 * [https://github.com/mathiasbynens/dotfiles](https://github.com/mathiasbynens/dotfiles)
 * [http://brettterpstra.com/2011/10/04/bash-auto-complete-for-running-applications/](http://brettterpstra.com/2011/10/04/bash-auto-complete-for-running-applications/)
