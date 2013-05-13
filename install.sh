@@ -30,7 +30,7 @@ export DOTPATH="~/dotfiles"
 eval DOTPATH=$DOTPATH
 
 # Установка homebrew
-if ! command -v git >/dev/null 2>&1; then
+if ! command -v brew >/dev/null 2>&1; then
 	echo "$INSTALL Установка homebrew..."
 	ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
 	echo "$OK homebrew установлен"
