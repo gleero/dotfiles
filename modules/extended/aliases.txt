@@ -9,3 +9,6 @@ alias lscleanup="/System/Library/Frameworks/CoreServices.framework/Frameworks/La
 
 # rm .DS_Store files
 alias cleanme="find . -name '.DS_Store' -exec rm {} \;"
+
+# Lock mac
+alias lock="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
