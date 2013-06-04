@@ -35,9 +35,18 @@ _EOF_
 fi
 
 if [ "$1" == "install" ]; then
+
 cat > ~/.bashrc <<_EOF_
 if [ -e ~/.bash_profile ]; then
 	source ~/.bash_profile
 fi
 _EOF_
+
+cat > ~/.inputrc <<_EOF_
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+set show-all-if-ambiguous on
+set completion-ignore-case on
+_EOF_
+
 fi
