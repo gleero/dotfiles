@@ -1,0 +1,21 @@
+#!/usr/local/bin/node
+
+var express = require("express");
+var app = express();
+var cwd = process.cwd();
+
+console.log("Listening on http://localhost:8000/");
+
+app.configure(function(){
+	app.use(express.static(cwd));
+});
+
+app.get('/', function(req, res){
+	res.sendfile(cwd + '/index.html');
+});
+
+try {
+	app.listen(8000);
+} catch (e) {
+	console.log("Address already in use");
+}
