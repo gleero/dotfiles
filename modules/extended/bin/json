@@ -37,6 +37,7 @@ except KeyboardInterrupt:
     sys.exit(1)
 
 try:
+    #ret = json.loads(unicode(data[0], 'unicode-escape'))
     ret = json.loads(data[0])
     export = json.dumps(ret, indent=4)
 
@@ -56,4 +57,4 @@ if sys.stdout.isatty():
     export = re.sub(r"0m(:)", r'%s\1%s' % (Red, Nocolor), export)
     export = re.sub(r"(true|false|null)", r'%s\1%s' % (Blue, Nocolor), export)
 
-print export
+print unicode(export, 'unicode-escape')
