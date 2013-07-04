@@ -12,6 +12,9 @@ import sys
 import json
 import re
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 # Help
 if len(sys.argv) > 1 and "-h" in sys.argv[1]:
     print "Pretty JSON (http://gleero.com)"
@@ -57,4 +60,6 @@ if sys.stdout.isatty():
     export = re.sub(r"0m(:)", r'%s\1%s' % (Red, Nocolor), export)
     export = re.sub(r"(true|false|null)", r'%s\1%s' % (Blue, Nocolor), export)
 
-print unicode(export, 'unicode-escape')
+#print export
+print export.decode('unicode-escape')
+#print unicode(export, 'unicode-escape')
