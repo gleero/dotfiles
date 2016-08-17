@@ -32,7 +32,7 @@ eval DOTPATH=$DOTPATH
 # Установка homebrew
 if ! command -v brew >/dev/null 2>&1; then
 	echo "$INSTALL Установка homebrew..."
-	ruby -e "$(curl -fsSkL raw.github.com/mxcl/homebrew/go)"
+	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	echo "$OK homebrew установлен"
 else
 	echo "$INFO Обновление homebrew..."
